@@ -7,11 +7,20 @@ datasource db {
   provider = "postgresql"
 }
 
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   // MediumText may be needed for MySql
+  expiresAt DateTime
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id       Int     @id @default(autoincrement())
+  email    String?  @unique
+  name     String?
+  username String
+  password String
+  posts    Post[]
 }
 
 model Post {

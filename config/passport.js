@@ -8,15 +8,16 @@ import bcrypt from "bcryptjs";
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
-            const { rows } = await db.getUser(username);
-            const user = rows[0];
+            const user = await db.getUser(username);
+            console.log(user);
 
             if (!user) {
                 console.log("Incorrect username");
                 return done(null, false, { message: "Incorrect username" });
             }
 
-            const match = await bcrypt.compare(password, user.password_hash);
+            console.log(typeof password);
+            const match = await bcrypt.compare(password, user.password);
             if (!match) {
                 console.log("incorrect password");
                 console.log(user.password_hash);
@@ -38,8 +39,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const { rows } = await db.getUserById(id);
-        const user = rows[0];
+        const user = await db.getUserById(id);
 
         done(null, user);
     } catch (err) {

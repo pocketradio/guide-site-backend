@@ -2,17 +2,6 @@ import db from "../db/authQueries.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 
-async function initializeDatabase(req, res) {
-    // These functions automatically write a
-    // console log to the server if they need
-    // to make tables
-    Promise.all([
-        db.initializeMessages(),
-        db.initializeUsers(),
-        db.initializeSessionTable(),
-    ]);
-}
-
 async function addUser(req, res) {
     const username = req.body.username;
     const password = req.body.password;
@@ -40,4 +29,11 @@ async function addUser(req, res) {
     res.redirect("/");
 }
 
-export default { initializeDatabase, addUser };
+async function testCrud(req, res) {
+    const addUser = await db.addUser("GhidWard", "Password");
+    const getUser = await db.getUser("GhidWard");
+    const getUserById = await db.getUserById(1);
+    console.log(getUserById);
+}
+
+export default { addUser, testCrud };

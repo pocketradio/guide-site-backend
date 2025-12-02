@@ -28,4 +28,9 @@ router.get("/", async (req, res) => {
     res.render("index", { user: req.user });
 });
 
+router.get("/test", async (req, res) => {
+    authController.testCrud();
+    res.redirect("/");
+});
+
 export default router;

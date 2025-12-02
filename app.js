@@ -9,7 +9,7 @@ const app = express();
 
 // Database automatic initialization
 import dbController from "./controllers/authController.js";
-dbController.initializeDatabase();
+// dbController.initializeDatabase();
 
 // Authentication
 import session from "express-session";
@@ -18,19 +18,24 @@ const PgStore = pgSession(session);
 import passport from "passport";
 import "./config/passport.js";
 import pool from "./db/pool.js";
+import { prisma } from "./lib/prisma.js";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+
 app.use(
     session({
-        store: new PgStore({
+        /* store: new PgStore({
             pool,
             tableName: "session", // optional
-        }),
+        }), */
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
-        cookie: {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-        },
+        store: new PrismaSessionStore(prisma, {
+            checkPeriod: 2 * 60 * 1000, //ms
+            dbRecordIdIsSessionId: true,
+            dbRecordIdFunction: undefined,
+        }),
     })
 );
 app.use(passport.session());
