@@ -12,10 +12,10 @@
             <li><%= error.msg %></li>
             <% }); %>
         </ul>
-        <% }; %>
-        
-        <% if (locals.user) {%>
+        <% }; %> <% if (locals.user) {%>
         <h1>Welcome back <%= user.username %></h1>
+
+        <a href="/file-manager">File Manager</a>
         <a href="/log-out">Log Out</a>
         <%} else {%>
         <p>Sign Up:</p>

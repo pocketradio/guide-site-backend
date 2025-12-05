@@ -10,13 +10,13 @@ datasource db {
 model Session {
   id        String   @id
   sid       String   @unique
-  data      String   // MediumText may be needed for MySql
+  data      String // MediumText may be needed for MySql
   expiresAt DateTime
 }
 
 model User {
   id       Int     @id @default(autoincrement())
-  email    String?  @unique
+  email    String? @unique
   name     String?
   username String
   password String
@@ -30,4 +30,19 @@ model Post {
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+}
+
+model Folder {
+  id    Int    @id @default(autoincrement())
+  title String
+  files File[]
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  title    String
+  filename String
+  url      String
+  folder   Folder @relation(fields: [folderId], references: [id])
+  folderId Int
 }

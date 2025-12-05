@@ -23,10 +23,6 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
 app.use(
     session({
-        /* store: new PgStore({
-            pool,
-            tableName: "session", // optional
-        }), */
         cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
         secret: process.env.SESSION_SECRET,
         resave: false,
