@@ -1,4 +1,3 @@
-import pool from "./pool.js";
 import { prisma } from "../lib/prisma.js";
 import { check } from "express-validator";
 
@@ -43,14 +42,6 @@ async function getUserById(id) {
     });
     return result;
 }
-
-/*
-===== EXAMPLE FUNCTION =======================
-async function getAllPosts() {
-    const { rows } = await pool.query("SELECT * FROM posts");
-    return rows;
-}
-*/
 
 export default {
     addUser,

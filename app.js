@@ -7,17 +7,10 @@ import express from "express";
 import router from "./routes/router.js";
 const app = express();
 
-// Database automatic initialization
-import dbController from "./controllers/authController.js";
-// dbController.initializeDatabase();
-
 // Authentication
 import session from "express-session";
-import pgSession from "connect-pg-simple";
-const PgStore = pgSession(session);
 import passport from "passport";
 import "./config/passport.js";
-import pool from "./db/pool.js";
 import { prisma } from "./lib/prisma.js";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
@@ -35,18 +28,6 @@ app.use(
     })
 );
 app.use(passport.session());
-
-// For view engine - EJS
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
-// creates a path to the public assets
-const assetsPath = path.join(__dirname, "public");
-app.use(express.static(assetsPath));
 
 // To allow form inputs
 // Without this, form submissions would have

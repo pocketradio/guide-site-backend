@@ -1,6 +1,7 @@
 import db from "../db/authQueries.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
+import passport from "passport";
 
 async function addUser(req, res) {
     const username = req.body.username;
@@ -29,11 +30,20 @@ async function addUser(req, res) {
     res.redirect("/");
 }
 
-async function testCrud(req, res) {
-    const addUser = await db.addUser("GhidWard", "Password");
-    const getUser = await db.getUser("GhidWard");
-    const getUserById = await db.getUserById(1);
-    console.log(getUserById);
+async function logout(req, res) {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.redirect("/");
+    });
 }
 
-export default { addUser, testCrud };
+async function login(req, res) {
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/",
+    });
+}
+
+export default { addUser, logout, login };

@@ -20,29 +20,25 @@ model User {
   name     String?
   username String
   password String
-  posts    Post[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Game {
+  id         Int         @id
+  title      String
+  checklists Checklist[]
 }
 
-model Folder {
-  id    Int    @id @default(autoincrement())
-  title String
-  files File[]
+model Checklist {
+  id             Int             @id
+  title          String
+  game           Game            @relation(fields: [gameId], references: [id])
+  gameId         Int
+  checklistItems ChecklistItem[]
 }
 
-model File {
-  id       Int    @id @default(autoincrement())
-  title    String
-  filename String
-  url      String
-  folder   Folder @relation(fields: [folderId], references: [id])
-  folderId Int
+model ChecklistItem {
+  id          Int       @id
+  title       String
+  checklist   Checklist @relation(fields: [checklistId], references: [id])
+  checklistId Int
 }
