@@ -24,4 +24,8 @@ router.post("/games/:gameId/checklists", gameController.postChecklist);
 
 router.get("/checklists/:checklistId", gameController.getChecklistItems);
 
+router.post("/checklists/:checklistId", gameController.postChecklistItem);
+
+router.put("/checklistItems/:itemId", gameController.updateChecklistItem);
+
 export default router;

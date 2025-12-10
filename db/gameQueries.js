@@ -37,10 +37,34 @@ async function getChecklistItems(checklistId) {
     });
 }
 
+async function createChecklistItem(title, checklistId) {
+    return await prisma.checklistItem.create({
+        data: {
+            checklistId,
+            title,
+        },
+    });
+}
+
+async function updateChecklistItem({ itemId, title, imageOne, imageTwo } = {}) {
+    return await prisma.checklistItem.update({
+        where: {
+            id: itemId,
+        },
+        data: {
+            title,
+            imageOne,
+            imageTwo,
+        },
+    });
+}
+
 export default {
     getGames,
     createGame,
     createChecklist,
     getChecklists,
     getChecklistItems,
+    createChecklistItem,
+    updateChecklistItem,
 };
