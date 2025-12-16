@@ -38,10 +38,22 @@ async function deletePageById(id) {
     });
 }
 
+async function updatePage({ id, title } = {}) {
+    return await prisma.page.update({
+        where: {
+            id,
+        },
+        data: {
+            title,
+        },
+    });
+}
+
 export default {
     getPages,
     createPage,
     checkPagesForTitle,
     deletePageById,
     checkPageById,
+    updatePage
 };

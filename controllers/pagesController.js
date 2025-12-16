@@ -22,7 +22,7 @@ async function postPage(req, res) {
 }
 
 async function deletePage(req, res) {
-    const id = req.body.id;
+    const id = +req.params.pageId;
     const exists = await db.checkPageById(id);
     if (!exists) {
         console.log("Error: couldn't find page with id " + id);
@@ -36,8 +36,18 @@ async function deletePage(req, res) {
     return;
 }
 
+async function updatePage(req, res) {
+    console.log("Received edit request");
+    const id = +req.params.pageId;
+    const title = req.body.title;
+    const result = await db.updatePage({ id, title });
+    console.log(result);
+    res.send(result);
+}
+
 export default {
     getPages,
     postPage,
     deletePage,
+    updatePage,
 };
