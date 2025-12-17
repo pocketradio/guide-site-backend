@@ -27,6 +27,7 @@ model Game {
   title      String      @unique
   checklists Checklist[]
   tags       Tag[]
+  pages      Page[]
 }
 
 model Checklist {
@@ -64,6 +65,8 @@ model Page {
   id     Int     @id @default(autoincrement())
   title  String
   blocks Block[]
+  game   Game    @relation(fields: [gameId], references: [id])
+  gameId Int
 }
 
 model Block {

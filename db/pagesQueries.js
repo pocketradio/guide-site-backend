@@ -1,14 +1,12 @@
-import { check } from "express-validator";
 import { prisma } from "../lib/prisma.js";
-import e from "express";
 
 async function getPages() {
     return await prisma.page.findMany();
 }
 
-async function createPage(title) {
+async function createPage(title, gameId) {
     return await prisma.page.create({
-        data: { title },
+        data: { title, gameId: 1 },
     });
 }
 
@@ -49,11 +47,29 @@ async function updatePage({ id, title } = {}) {
     });
 }
 
+async function getPageBlocks(pageId) {
+    return await prisma.block.findMany({
+        where: {
+            pageId,
+        },
+    });
+}
+
+async function createBlockForPage(pageId) {
+    return await prisma.block.create({
+        data: {
+            pageId,
+        },
+    });
+}
+
 export default {
     getPages,
     createPage,
     checkPagesForTitle,
     deletePageById,
     checkPageById,
-    updatePage
+    updatePage,
+    getPageBlocks,
+    createBlockForPage
 };

@@ -1,4 +1,3 @@
-import { title } from "process";
 import db from "../db/pagesQueries.js";
 
 async function getPages(req, res) {
@@ -17,7 +16,7 @@ async function postPage(req, res) {
         res.status(400).send({ error: "Page already exists" });
         return;
     }
-    const result = await db.createPage(title);
+    const result = await db.createPage(title, 1);
     res.send(result);
 }
 
@@ -45,9 +44,28 @@ async function updatePage(req, res) {
     res.send(result);
 }
 
+async function getPage(req, res) {
+    console.log("Received page get request");
+    const pageId = +req.params.pageId;
+    const blocks = await db.getPageBlocks(pageId);
+    console.log("blocks:");
+    console.log(blocks);
+    res.send(blocks);
+}
+
+async function createBlockForPage(req, res) {
+    console.log("Received block creation request");
+    const pageId = +req.params.pageId;
+    const result = await db.createBlockForPage(pageId);
+    console.log(result);
+    res.send(result);
+}
+
 export default {
     getPages,
+    getPage,
     postPage,
     deletePage,
     updatePage,
+    createBlockForPage,
 };
