@@ -10,5 +10,6 @@ router.get("/:pageId", pagesController.getPage);
 router.delete("/:pageId", pagesController.deletePage);
 router.put("/:pageId", pagesController.updatePage);
 router.post("/:pageId/blocks", pagesController.createBlockForPage);
+router.put("/:pageId/blocks", pagesController.updateBlocksForPage);
 
 export default router;

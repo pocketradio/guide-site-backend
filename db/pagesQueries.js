@@ -63,10 +63,27 @@ async function getPageBlocks(pageId) {
     });
 }
 
-async function createBlockForPage(pageId) {
+async function createBlockForPage(pageId, order) {
     return await prisma.block.create({
         data: {
             pageId,
+            order,
+        },
+    });
+}
+
+async function offsetBlockOrderForPage(pageId, order) {
+    // Specifically, offsets order starting from "order", inclusive
+    return await prisma.block.updateMany({
+        where: {
+            order: {
+                gte: order,
+            },
+        },
+        data: {
+            order: {
+                increment: 1,
+            },
         },
     });
 }
@@ -81,4 +98,5 @@ export default {
     updatePage,
     getPageBlocks,
     createBlockForPage,
+    offsetBlockOrderForPage,
 };

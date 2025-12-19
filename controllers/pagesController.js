@@ -57,9 +57,27 @@ async function getPage(req, res) {
 async function createBlockForPage(req, res) {
     console.log("Received block creation request");
     const pageId = +req.params.pageId;
-    const result = await db.createBlockForPage(pageId);
+    const order = +req.body.order;
+    const result = await db.createBlockForPage(pageId, order);
     console.log(result);
     res.send(result);
+}
+
+async function updateBlocksForPage(req, res) {
+    const pageId = +req.params.pageId;
+    const updateType = req.body.type;
+    const order = +req.body.order;
+    console.log("Received request to update blocks for page " + pageId);
+    console.log(updateType);
+    let result;
+    if (updateType == "offset") {
+        result = await offsetBlockOrderForPage(pageId, order);
+    }
+    res.send(result);
+}
+
+async function offsetBlockOrderForPage(pageId, order) {
+    const result = await db.offsetBlockOrderForPage(pageId, order);
 }
 
 export default {
@@ -69,4 +87,5 @@ export default {
     deletePage,
     updatePage,
     createBlockForPage,
+    updateBlocksForPage,
 };
