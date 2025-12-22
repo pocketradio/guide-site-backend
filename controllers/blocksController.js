@@ -13,7 +13,6 @@ async function updateBlock(req, res) {
     const id = +req.params.blockId;
     console.log("Block update request received for Block ID: " + id);
     const content = req.body.content;
-    console.log("Content:", content);
     const result = await db.updateBlock(id, content);
     console.log(result);
     res.send(result);

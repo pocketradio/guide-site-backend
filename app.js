@@ -7,6 +7,7 @@ import express from "express";
 import router from "./routes/router.js";
 import pagesRouter from "./routes/pagesRouter.js";
 import blocksRouter from "./routes/blocksRouter.js";
+import navbarRouter from "./routes/navbarRouter.js";
 const app = express();
 
 // Authentication
@@ -27,7 +28,7 @@ app.use(
             dbRecordIdIsSessionId: true,
             dbRecordIdFunction: undefined,
         }),
-    })
+    }),
 );
 app.use(passport.session());
 
@@ -43,6 +44,7 @@ app.use(express.json());
 // "extended: true" allows nested objects in the data
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/navbar", navbarRouter);
 app.use("/blocks", blocksRouter);
 app.use("/pages", pagesRouter);
 app.use("/", router);

@@ -49,8 +49,6 @@ async function getPage(req, res) {
     const pageId = +req.params.pageId;
     const page = await db.getPage(pageId);
     const blocks = await db.getPageBlocks(pageId);
-    console.log("page and blocks:");
-    console.log(page, blocks);
     res.send({ page, blocks });
 }
 

@@ -28,6 +28,8 @@ model Game {
   checklists Checklist[]
   tags       Tag[]
   pages      Page[]
+  slug       String?
+  navbar     Json?
 }
 
 model Checklist {
