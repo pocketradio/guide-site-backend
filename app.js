@@ -8,6 +8,9 @@ import router from "./routes/router.js";
 import pagesRouter from "./routes/pagesRouter.js";
 import blocksRouter from "./routes/blocksRouter.js";
 import navbarRouter from "./routes/navbarRouter.js";
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
+
 const app = express();
 
 // Authentication

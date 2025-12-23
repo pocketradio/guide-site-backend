@@ -72,9 +72,17 @@ model Page {
 }
 
 model Block {
-  id      Int   @id @default(autoincrement())
-  page    Page  @relation(fields: [pageId], references: [id])
+  id      Int     @id @default(autoincrement())
+  page    Page    @relation(fields: [pageId], references: [id])
   pageId  Int
   content Json?
   order   Int?
+  type    String?
+}
+
+model File {
+  id       Int    @id @default(autoincrement())
+  title    String
+  filename String
+  url      String
 }

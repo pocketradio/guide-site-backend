@@ -63,11 +63,12 @@ async function getPageBlocks(pageId) {
     });
 }
 
-async function createBlockForPage(pageId, order) {
+async function createBlockForPage({ pageId, order, type }) {
     return await prisma.block.create({
         data: {
             pageId,
             order,
+            type,
         },
     });
 }

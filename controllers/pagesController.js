@@ -56,7 +56,9 @@ async function createBlockForPage(req, res) {
     console.log("Received block creation request");
     const pageId = +req.params.pageId;
     const order = +req.body.order;
-    const result = await db.createBlockForPage(pageId, order);
+    const type = req.body.type;
+    // blank type implies it's a text block
+    const result = await db.createBlockForPage({ pageId, order, type });
     console.log(result);
     res.send(result);
 }
