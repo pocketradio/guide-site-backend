@@ -41,25 +41,30 @@ async function uploadFile(req, res) {
 }
 
 async function deleteFile(req, res) {
-    const { key } = req.body;
+    const key = req.params.key;
+    // console.log(req.params);
+    console.log(req.body);
     console.log("Received files delete request");
-    console.log(key);
+    console.log("test" + key);
 
     if (!key) {
         return res.status(400).json({ error: "Missing file key" });
     }
 
-    result = await s3client.send(
+    const result = await s3client.send(
         new DeleteObjectCommand({
             Bucket: "ldg-guides-images",
             Key: key,
         }),
     );
+    const id = req.body.id;
+    console.log(id);
+    const resultDatabase = await db.deleteFile(id);
 
+    console.log("Removed file");
+    console.log(result);
     res.send(result);
 }
-
-
 
 // Replacing this with a script that just fetches file data from
 // prisma. I don't believe I need a dedicated download function

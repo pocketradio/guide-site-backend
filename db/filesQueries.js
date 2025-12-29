@@ -14,4 +14,12 @@ async function getFile(id) {
     });
 }
 
-export default { createFile };
+async function deleteFile(id) {
+    return await prisma.file.delete({
+        where: {
+            id,
+        },
+    });
+}
+
+export default { createFile, deleteFile };
