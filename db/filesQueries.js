@@ -22,4 +22,16 @@ async function deleteFile(id) {
     });
 }
 
-export default { createFile, deleteFile, getFile };
+async function getFilesByBlock(blockId) {
+    return await prisma.file.findMany({
+        where: { blockId },
+    });
+}
+
+async function deleteFilesByBlock(blockId) {
+    return await prisma.file.deleteMany({
+        where: { blockId },
+    });
+}
+
+export default { createFile, deleteFile, getFile, deleteFilesByBlock, getFilesByBlock };

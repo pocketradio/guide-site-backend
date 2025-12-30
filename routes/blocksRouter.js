@@ -22,8 +22,9 @@ const upload = multer({
 });
 
 // route is "blocks"
-router.get("/:blockId", blocksController.getBlock)
+router.get("/:blockId", blocksController.getBlock);
 router.delete("/:blockId", blocksController.deleteBlock);
+router.delete("/:blockId/files", filesController.deleteBlockFiles);
 router.put("/:blockId", blocksController.updateBlock);
 router.post("/:blockId/files", upload.any(), filesController.uploadFile);
 

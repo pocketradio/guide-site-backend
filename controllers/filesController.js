@@ -39,10 +39,42 @@ async function uploadFile(req, res) {
     res.send(relevantData);
 }
 
-async function deleteFile(req, res) {
-    console.log("Received file delete request");
+async function deleteBlockFiles(req, res) {
+    console.log("Block files delete request: " + req.params.blockId);
+    const blockId = +req.params.blockId;
 
+    // Get list of files
+    const result = await db.getFilesByBlock(blockId);
+
+    // List S3 names
+    const s3Urls = result.map((current) => current.filename);
+
+    // Delete them all from amazon s3
+
+    console.log("Deleting S3 files");
+    const deleteS3Result = await Promise.all(
+        s3Urls.map((url) =>
+            s3client.send(
+                new DeleteObjectCommand({
+                    Bucket: "ldg-guides-images",
+                    Key: url,
+                }),
+            ),
+        ),
+    );
+
+    console.log(deleteS3Result);
+
+    // Afterwards, delete all the files
+    const deletionResult = await db.deleteFilesByBlock(blockId);
+
+    console.log(deletionResult);
+    res.send(deletionResult);
+}
+
+async function deleteFile(req, res) {
     const id = +req.params.id;
+    console.log("ile delete request: " + id);
 
     const getFileResult = await db.getFile(id);
 
@@ -99,4 +131,5 @@ export default {
     checkCredentials,
     deleteFile,
     downloadFile,
+    deleteBlockFiles,
 };

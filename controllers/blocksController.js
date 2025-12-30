@@ -2,9 +2,8 @@ import db from "../db/blocksQueries.js";
 
 async function getBlock(req, res) {
     const blockId = +req.params.blockId;
-    console.log(blockId);
+    console.log("Block get request received " + blockId);
     const result = await db.getBlock(blockId);
-    console.log(result);
     res.send(result);
 }
 
