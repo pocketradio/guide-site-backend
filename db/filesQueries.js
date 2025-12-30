@@ -22,4 +22,4 @@ async function deleteFile(id) {
     });
 }
 
-export default { createFile, deleteFile };
+export default { createFile, deleteFile, getFile };

@@ -41,29 +41,37 @@ async function uploadFile(req, res) {
 }
 
 async function deleteFile(req, res) {
-    const key = req.params.key;
-    // console.log(req.params);
-    console.log(req.body);
-    console.log("Received files delete request");
-    console.log("test" + key);
+    console.log("Received file delete request");
 
+    const id = +req.params.id;
+
+    const getFileResult = await db.getFile(id);
+
+    console.log(getFileResult);
+
+    const key = getFileResult.filename;
     if (!key) {
         return res.status(400).json({ error: "Missing file key" });
     }
+    console.log(key);
 
-    const result = await s3client.send(
+    const deleteFileDBResult = await db.deleteFile(id);
+
+    console.log("Delete file from DB response:");
+    console.log(deleteFileDBResult);
+
+    const deleteFileS3Result = await s3client.send(
         new DeleteObjectCommand({
             Bucket: "ldg-guides-images",
             Key: key,
         }),
     );
-    const id = req.body.id;
-    console.log(id);
-    const resultDatabase = await db.deleteFile(id);
 
-    console.log("Removed file");
-    console.log(result);
-    res.send(result);
+    console.log("Delete file from S3 response (success message doesn't indicate deletion)");
+    console.log(deleteFileS3Result);
+
+    console.log("End of deletion request");
+    res.send(getFileResult);
 }
 
 // Replacing this with a script that just fetches file data from
