@@ -1,5 +1,13 @@
 import db from "../db/blocksQueries.js";
 
+async function getBlock(req, res) {
+    const blockId = +req.params.blockId;
+    console.log(blockId);
+    const result = await db.getBlock(blockId);
+    console.log(result);
+    res.send(result);
+}
+
 async function deleteBlock(req, res) {
     const id = +req.params.blockId;
     console.log("Block deletion request received on block ID:" + id);
@@ -18,4 +26,4 @@ async function updateBlock(req, res) {
     res.send(result);
 }
 
-export default { deleteBlock, updateBlock };
+export default { deleteBlock, updateBlock, getBlock };

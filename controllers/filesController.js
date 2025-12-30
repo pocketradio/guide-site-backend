@@ -28,16 +28,14 @@ async function createBucket(req, res) {
 async function uploadFile(req, res) {
     console.log("Upload file request received");
     const file = req.files[0];
-    console.log(file);
     const title = file.originalname;
     const url = file.location;
     const filename = file.key;
     const blockId = +req.params.blockId;
     const relevantData = { title, url, filename, blockId };
-    console.log("Data for file creation:");
-    console.log(relevantData);
     db.createFile(relevantData);
 
+    console.log("uploading file: " + filename + " to block: " + blockId);
     res.send(relevantData);
 }
 
