@@ -23,15 +23,16 @@ async function createBucket(req, res) {
     res.send(result);
 }
 
+// path/blocks/:blockId/files
+
 async function uploadFile(req, res) {
     console.log("Upload file request received");
-    const reqBody = JSON.parse(req.body.block);
-    console.log("Block data:");
-    console.log(reqBody);
-    const title = req.file.originalname;
-    const url = req.file.location;
-    const filename = req.file.key;
-    const blockId = reqBody.id;
+    const file = req.files[0];
+    console.log(file);
+    const title = file.originalname;
+    const url = file.location;
+    const filename = file.key;
+    const blockId = +req.params.blockId;
     const relevantData = { title, url, filename, blockId };
     console.log("Data for file creation:");
     console.log(relevantData);
@@ -67,7 +68,9 @@ async function deleteFile(req, res) {
         }),
     );
 
-    console.log("Delete file from S3 response (success message doesn't indicate deletion)");
+    console.log(
+        "Delete file from S3 response (success message doesn't indicate deletion)",
+    );
     console.log(deleteFileS3Result);
 
     console.log("End of deletion request");

@@ -28,9 +28,7 @@ const upload = multer({
     }),
 });
 
-// router.get("/", filesController.createBucket);
-router.post("/", upload.single("upload-file"), filesController.uploadFile);
-// swap the key here with the id
+// route is files
 router.delete("/:id", filesController.deleteFile);
 
 export default router;
