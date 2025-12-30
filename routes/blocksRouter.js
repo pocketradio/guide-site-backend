@@ -21,7 +21,7 @@ const upload = multer({
     }),
 });
 
-// route is "/blocks"
+// route is "blocks"
 router.delete("/:blockId", blocksController.deleteBlock);
 router.put("/:blockId", blocksController.updateBlock);
 router.post("/:blockId/files", upload.any(), filesController.uploadFile);
