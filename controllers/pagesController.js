@@ -1,3 +1,4 @@
+import { unwatchFile } from "node:fs";
 import db from "../db/pagesQueries.js";
 
 async function getPages(req, res) {
@@ -38,17 +39,41 @@ async function deletePage(req, res) {
 async function updatePage(req, res) {
     console.log("Received edit request");
     const id = +req.params.pageId;
-    const title = req.body.title;
-    const result = await db.updatePage({ id, title });
+    const { title, slug } = req.body;
+    const result = await db.updatePage({ id, title, slug });
     console.log(result);
     res.send(result);
 }
 
 async function getPage(req, res) {
     console.log("Received page get request");
-    const pageId = +req.params.pageId;
-    const page = await db.getPage(pageId);
-    const blocks = await db.getPageBlocks(pageId);
+    const type = req.query.type == "" ? "id" : req.query.type;
+    const gameId = +req.query.gameId;
+
+    // If the type is ID we don't want a string we want a number
+    const pageInfo = type == "id" ? +req.params.pageInfo : req.params.pageInfo;
+
+    console.log("page request type: " + type);
+    console.log("game: " + gameId);
+    let page, blocks;
+    if (type == "id") {
+        page = await db.getPage(pageInfo);
+        blocks = await db.getPageBlocks(pageInfo);
+    }
+    console.log(type);
+    if (type == "title") {
+        console.log("executing page block");
+        console.log("title: " + pageInfo);
+        console.log("GameId: " + gameId);
+        page = await db.getPageBySlugAndGameId({ slug: pageInfo, gameId });
+        blocks = await db.getPageBlocksBySlugAndGameId({
+            slug: pageInfo,
+            gameId,
+        });
+    }
+    console.log(page);
+    console.log(blocks);
+
     res.send({ page, blocks });
 }
 

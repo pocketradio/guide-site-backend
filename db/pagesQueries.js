@@ -36,13 +36,14 @@ async function deletePageById(id) {
     });
 }
 
-async function updatePage({ id, title } = {}) {
+async function updatePage({ id, title, slug } = {}) {
     return await prisma.page.update({
         where: {
             id,
         },
         data: {
             title,
+            slug,
         },
     });
 }
@@ -59,6 +60,31 @@ async function getPageBlocks(pageId) {
     return await prisma.block.findMany({
         where: {
             pageId,
+        },
+        include: {
+            files: true,
+        },
+    });
+}
+
+async function getPageBySlugAndGameId({ slug, gameId }) {
+    return await prisma.page.findUnique({
+        where: {
+            slug_gameId: {
+                slug,
+                gameId,
+            },
+        },
+    });
+}
+
+async function getPageBlocksBySlugAndGameId({ slug, gameId }) {
+    return await prisma.block.findMany({
+        where: {
+            page: {
+                slug,
+                gameId,
+            },
         },
         include: {
             files: true,
@@ -103,4 +129,6 @@ export default {
     getPageBlocks,
     createBlockForPage,
     offsetBlockOrderForPage,
+    getPageBySlugAndGameId,
+    getPageBlocksBySlugAndGameId,
 };
