@@ -4,6 +4,14 @@ async function getGames() {
     return await prisma.game.findMany();
 }
 
+async function getGame({ id }) {
+    return await prisma.game.findUnique({
+        where: {
+            id,
+        },
+    });
+}
+
 async function createGame(title) {
     return await prisma.game.create({
         data: {
@@ -66,7 +74,7 @@ async function updateChecklistItem({
     imageOne,
     imageTwo,
     tagId,
-    description
+    description,
 } = {}) {
     return await prisma.checklistItem.update({
         where: {
@@ -121,4 +129,5 @@ export default {
     getTags,
     createTag,
     unlinkItemAndTag,
+    getGame
 };

@@ -16,6 +16,8 @@ router.get("/", indexController.getIndex);
 
 router.get("/games", gameController.getGames);
 
+router.get("/games/:gameId", gameController.getGame)
+
 router.post("/games", gameController.postGame);
 
 router.get("/games/:gameId/checklists", gameController.getChecklists);

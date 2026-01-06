@@ -6,6 +6,15 @@ async function getGames(req, res) {
     res.send(games);
 }
 
+async function getGame(req, res) {
+    const { gameId } = req.params;
+    console.log(req.params);
+    console.log(req.params.gameId);
+    const game = await db.getGame({ id: +gameId });
+    console.log(game);
+    res.send(game);
+}
+
 async function postGame(req, res) {
     if (req.body.title == undefined) {
         res.status(400).send("Bad Request: Title value is undefined");
@@ -48,7 +57,7 @@ async function postChecklistItem(req, res) {
 
     const result = await db.createChecklistItem(title, checklistId);
     console.log(
-        "Added checklist item: " + title + ", to checklist #" + checklistId
+        "Added checklist item: " + title + ", to checklist #" + checklistId,
     );
     console.log(result);
     res.send(result);
@@ -110,4 +119,5 @@ export default {
     postTag,
     getChecklistItem,
     deleteItemAndTagConnection,
+    getGame,
 };
