@@ -5,40 +5,39 @@ import authController from "../controllers/authController.js";
 import indexController from "../controllers/indexController.js";
 import gameController from "../controllers/gameController.js";
 import { validateSignup } from "../validators/authValidators.js";
+import requireAdmin from "../config/requireAdmin.js";
 
-router.post("/sign-up", [validateSignup, authController.addUser]);
-
-router.post("/log-in", authController.login);
-
+router.post("/sign-up", requireAdmin, [validateSignup, authController.addUser]);
+router.post("/log-in", requireAdmin, authController.login);
 router.get("/log-out", authController.logout);
-
 router.get("/", indexController.getIndex);
-
 router.get("/games", gameController.getGames);
-
-router.get("/games/:gameId", gameController.getGame)
-
-router.post("/games", gameController.postGame);
-
+router.get("/games/:gameId", gameController.getGame);
+router.post("/games", requireAdmin, gameController.postGame);
 router.get("/games/:gameId/checklists", gameController.getChecklists);
-
-router.post("/games/:gameId/checklists", gameController.postChecklist);
-
+router.post(
+    "/games/:gameId/checklists",
+    requireAdmin,
+    gameController.postChecklist,
+);
 router.get("/checklists/:checklistId", gameController.getChecklistItems);
-
-router.post("/checklists/:checklistId", gameController.postChecklistItem);
-
+router.post(
+    "/checklists/:checklistId",
+    requireAdmin,
+    gameController.postChecklistItem,
+);
 router.get("/checklistItems/:id", gameController.getChecklistItem);
-
 router.delete(
     "/checklistItems/:itemId/tags/:tagId",
-    gameController.deleteItemAndTagConnection
+    requireAdmin,
+    gameController.deleteItemAndTagConnection,
 );
-
-router.put("/checklistItems/:itemId", gameController.updateChecklistItem);
-
+router.put(
+    "/checklistItems/:itemId",
+    requireAdmin,
+    gameController.updateChecklistItem,
+);
 router.get("/tags", gameController.getTags);
-
-router.post("/tags/:tagTitle", gameController.postTag);
+router.post("/tags/:tagTitle", requireAdmin, gameController.postTag);
 
 export default router;
