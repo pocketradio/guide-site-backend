@@ -81,7 +81,7 @@ model Page {
   blocks    Block[]
   game      Game    @relation(fields: [gameId], references: [id])
   gameId    Int
-  section   Section @relation(fields: [sectionId], references: [id])
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   sectionId Int
 
   @@unique([slug, gameId])
