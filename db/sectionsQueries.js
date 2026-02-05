@@ -20,3 +20,12 @@ export async function getGameWithSectionId(sectionId){
         }
     })
 }
+
+
+export async function deleteSectionRecord(id){
+    return await prisma.section.delete({
+        where:{
+            id
+        }
+    })
+}
