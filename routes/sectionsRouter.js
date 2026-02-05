@@ -5,6 +5,6 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/", requireAdmin, createSection)
-router.post("/delete", requireAdmin, deleteSection)
+router.delete("/delete/:id", requireAdmin, deleteSection)
 
 export default router;
