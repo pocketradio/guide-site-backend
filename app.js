@@ -9,6 +9,8 @@ import pagesRouter from "./routes/pagesRouter.js";
 import blocksRouter from "./routes/blocksRouter.js";
 import navbarRouter from "./routes/navbarRouter.js";
 import filesRouter from "./routes/filesRouter.js";
+import sectionsRouter from "./routes/sectionsRouter.js";
+
 import multer from "multer";
 const upload = multer({ dest: "uploads/" });
 
@@ -38,6 +40,7 @@ app.use(
 app.use(passport.session());
 
 import cors from "cors";
+
 app.use(cors());
 
 // To receive JSON
@@ -53,6 +56,7 @@ app.use("/navbar", navbarRouter);
 app.use("/blocks", blocksRouter);
 app.use("/pages", pagesRouter);
 app.use("/files", filesRouter);
+app.use("/sections", sectionsRouter);
 app.use("/", router);
 
 const PORT = process.env.PORT;
