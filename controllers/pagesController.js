@@ -1,6 +1,5 @@
-import { unwatchFile } from "node:fs";
-import db from "../db/pagesQueries.js";
-
+import { getGameWithSectionId } from "../db/sectionsQueries.js";
+import db from "../db/pagesQueries.js"
 async function getPages(req, res) {
     console.log("pages request received");
     const result = await db.getPages();
@@ -8,7 +7,13 @@ async function getPages(req, res) {
 }
 
 async function postPage(req, res) {
-    const title = req.body.title;
+    // const title = req.body.title;
+    const {title, sectionId} = req.body;
+    console.log(title, sectionId, "is the game data");
+
+    //now we use sectionId to find the game:
+    const {gameId} = await getGameWithSectionId(sectionId);
+    console.log(gameId);
 
     console.log("Page POST request received");
     const exists = await db.checkPagesForTitle(title);
@@ -17,7 +22,7 @@ async function postPage(req, res) {
         res.status(400).send({ error: "Page already exists" });
         return;
     }
-    const result = await db.createPage(title, 1);
+    const result = await db.createPage(title, Number(gameId), Number(sectionId) );
     res.send(result);
 }
 
@@ -36,10 +41,14 @@ async function deletePage(req, res) {
     return;
 }
 
+
+// this function is SOLELY for page title and slug update.
+// page section change will be handled in a different functions in sectionsController.js and sectionsQueries.js
 async function updatePage(req, res) {
     console.log("Received edit request");
     const id = +req.params.pageId;
     const { title, slug } = req.body;
+    console.log(title, slug)
     const result = await db.updatePage({ id, title, slug });
     console.log(result);
     res.send(result);
@@ -105,6 +114,7 @@ async function updateBlocksForPage(req, res) {
 async function offsetBlockOrderForPage(pageId, order) {
     const result = await db.offsetBlockOrderForPage(pageId, order);
 }
+
 
 export default {
     getPages,

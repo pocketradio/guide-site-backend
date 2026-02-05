@@ -4,11 +4,17 @@ async function getPages() {
     return await prisma.page.findMany();
 }
 
-async function createPage(title, gameId) {
+async function createPage(title, gameId, sectionId) {
     return await prisma.page.create({
-        data: { title, gameId: 1 },
+        data: { 
+            title,
+            game : {connect : {id : gameId}},
+            section : {connect : {id : sectionId}}
+        },
     });
 }
+
+
 
 async function checkPagesForTitle(title) {
     const result = await prisma.page.findFirst({
