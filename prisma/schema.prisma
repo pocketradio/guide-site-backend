@@ -36,6 +36,7 @@ model Game {
 model Section {
   id     Int    @id @default(autoincrement())
   title  String
+  order  Int    @default(0)
   game   Game   @relation(fields: [gameId], references: [id])
   gameId Int
   pages  Page[]
