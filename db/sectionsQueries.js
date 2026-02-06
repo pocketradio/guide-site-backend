@@ -29,3 +29,36 @@ export async function deleteSectionRecord(id){
         }
     })
 }
+
+export async function renameSectionRecord(id, title){
+    return await prisma.section.update({
+        where:{
+            id
+        },
+        data:{
+            title
+        }
+    })
+}
+
+export async function updateSectionOrder(sectionOrder, gameId) {
+    await prisma.$transaction(
+        sectionOrder.map((sectionId, index) =>
+            prisma.section.update({
+                where: { 
+                    id: sectionId,
+                    gameId: gameId 
+                },
+                data: { order: index }
+            })
+        )
+    );
+}
+
+export async function getAllSectionsByGame(gameId) {
+    return await prisma.section.findMany({
+        where: { gameId },
+        include: { pages: true },
+        orderBy: { order: 'asc' }
+    });
+}
